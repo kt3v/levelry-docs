@@ -1,6 +1,6 @@
-# Levelry MCP — Integration Guide
+# Levelry MCP — Visual Canvas for AI Agents
 
-> Documentation for connecting any AI agent to Levelry via the Model Context Protocol (MCP). Levelry is a visual knowledge base — an infinite canvas where ideas become living documents.
+> Connect AI agents to a [visual knowledge base](https://levelry.app) via the Model Context Protocol. Includes a ready-made SKILL.md for instant agent setup with Claude, GPT, Hermes, or any MCP-compatible tool.
 
 ---
 
