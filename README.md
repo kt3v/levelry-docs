@@ -121,6 +121,18 @@ levelry:
 
 Restart the agent after adding the token — Levelry tools will appear automatically.
 
+---
+
+## The Skill
+
+The `levelry-mcp-guide` skill teaches any AI agent how to work with Levelry. It covers canvas fundamentals (bounds, layers, objects), document conventions, MCP tool limits, and best practices for placement and batch operations.
+
+### Install in Your Project
+
+```bash
+npx skills add kt3v/levelry-docs --skill levelry-mcp
+```
+
 --- 
 
 **weight_drop by [[indie indie](https://x.com/1hrOk)]**
