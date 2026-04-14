@@ -8,7 +8,8 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 ## 1. Core Rules & Placement
 * **Bounds:** Canvas is 3000×2500. Center is **(1500, 1250)**. Visible bounds: X `[450, 2550]`, Y `[375, 2125]`. Maintain ≥150px gaps between objects.
 * **Layers:** Read actions span ALL layers. Write actions target the ACTIVE layer unless `layerId` (string name, not ID) is specified. Move objects via `moveObjectsToLayer`, do not update properties to move them.
-* **Documents & Names:** An object's name subtitle is hidden if its document is empty. Include `content` at creation when a label adds value — unique objects, flow-chart nodes, documents. Skip it for generic repetitive objects (e.g., dozens of "tree" tiles on a game map) where labels would clutter. 
+* **System Objects:** **MEMORY** and **RULES** are system objects. Do not delete, rename, or overwrite them. You may append content or update them when explicitly asked, but never remove them or change their original purpose.
+* **Documents & Names:** An object's name subtitle is hidden if its document is empty. Include `content` at creation when a label adds value — unique objects, flow-chart nodes, documents. Skip it for generic repetitive objects (e.g., dozens of "tree" tiles on a game map) where labels would clutter.
 * **Text Format:** Document `content` requires plain multiline text with REAL line breaks. Do NOT use `\n` escape sequences.
 * **Workflow:** Always `searchDocuments` or `listObjects` before creating. Use real IDs from queries. Maximize efficiency by using `createMultipleObjects` and batch `updateObjects`.
 
