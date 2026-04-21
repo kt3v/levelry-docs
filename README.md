@@ -135,4 +135,4 @@ npx skills add kt3v/levelry-docs --skill levelry-mcp
 
 --- 
 
-**weight_drop by [[indie indie](https://x.com/1hrOk)]**
+**weird_drop by [[indie indie](https://x.com/1hrOk)]**
