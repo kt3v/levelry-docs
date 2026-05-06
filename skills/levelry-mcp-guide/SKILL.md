@@ -19,7 +19,7 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 * **Emoji (Default):** Visual object with a document.
 * **Text Label (`type: "textLabel"`):** Uses `name` for display text. Must set `emoji="🔤"`. Adjust width to fit. Use for short visual labels/titles, not as the primary container for notes/documents.
 * **Rectangle (`type: "rectangle"`):** Used for structural dividers, not regions.
-* **Connections:** Link objects visually. Optional `description` (max 500 chars). In batch creation, `from`/`to` accepts number (index in batch) or string (existing ID).
+* **Connections:** Link objects only when the relationship is useful and intentional; avoid visual clutter. Optional `description` (max 500 chars). In batch creation, `from`/`to` accepts number (index in batch) or string (existing ID).
 
 ## 3. MCP Tools — Limits & Non-obvious Details
 
