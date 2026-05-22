@@ -36,7 +36,7 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 * `updateObjects`: Single object — use root `objectId` etc. Batch (max 200) — pass array in `updates`. Modifiable: x, y, emoji, name, type, w/h, rotation, scale. Cannot update `layerId` here — use `moveObjectsToLayer`.
 * `updateCanvasDocument`: Max 150,000 chars.
 * `moveObjectsToLayer`: Max 500 objects. Layer by name or ID; prefer names.
-* `listConnections`: `limit` 1–500 (default 200). Optional `fromObjectId` filter (all outgoing arrows from an object) or `toObjectId` filter (all incoming arrows to an object). Response includes `fromObjectName` and `toObjectName` for readability. Call this before `deleteConnection` to discover connection IDs.
+* `listConnections`: `limit` 1–500 (default 200). Filter by `fromObjectId` or `toObjectId`. Response includes object names. Call before `deleteConnection` to find the ID.
 * `createConnection`: `description` max 500 chars. Connection is directed — arrow goes **from** `fromObjectId` **to** `toObjectId`.
 * `deleteConnection`: Delete by `connectionId`. Use `listConnections` first to find the ID.
 * `deleteObject`: Also removes all linked connections.
