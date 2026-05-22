@@ -19,7 +19,7 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 * **Emoji (Default):** Visual object with a document.
 * **Text Label (`type: "textLabel"`):** Uses `name` for display text. Must set `emoji="🔤"`. Adjust width to fit. Use for short visual labels/titles, not as the primary container for notes/documents.
 * **Rectangle (`type: "rectangle"`):** Used for structural dividers, not regions.
-* **Connections:** Link objects only when the relationship is useful and intentional; avoid visual clutter. Optional `description` (max 500 chars). In batch creation, `from`/`to` accepts number (index in batch) or string (existing ID).
+* **Connections:** Link objects only when the relationship is useful and intentional; avoid visual clutter. Optional `description` (max 500 chars). In batch creation, `from`/`to` accepts number (index in batch) or string (existing ID). Connections are **directed** — `fromObjectId` is the source (tail), `toObjectId` is the target (arrowhead). Use `listConnections` to read existing connections before creating or deleting.
 
 ## 3. MCP Tools — Limits & Non-obvious Details
 
@@ -36,6 +36,7 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 * `updateObjects`: Single object — use root `objectId` etc. Batch (max 200) — pass array in `updates`. Modifiable: x, y, emoji, name, type, w/h, rotation, scale. Cannot update `layerId` here — use `moveObjectsToLayer`.
 * `updateCanvasDocument`: Max 150,000 chars.
 * `moveObjectsToLayer`: Max 500 objects. Layer by name or ID; prefer names.
-* `createConnection`: `description` max 500 chars. Connection is directed (arrow from source to target).
-* `deleteConnection`: Delete by `connectionId`.
+* `listConnections`: `limit` 1–500 (default 200). Optional `fromObjectId` filter (all outgoing arrows from an object) or `toObjectId` filter (all incoming arrows to an object). Response includes `fromObjectName` and `toObjectName` for readability. Call this before `deleteConnection` to discover connection IDs.
+* `createConnection`: `description` max 500 chars. Connection is directed — arrow goes **from** `fromObjectId` **to** `toObjectId`.
+* `deleteConnection`: Delete by `connectionId`. Use `listConnections` first to find the ID.
 * `deleteObject`: Also removes all linked connections.
