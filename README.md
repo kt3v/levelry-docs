@@ -133,6 +133,33 @@ The `levelry-mcp-guide` skill teaches any AI agent how to work with Levelry. It 
 npx skills add kt3v/levelry-docs --skill levelry-mcp
 ```
 
---- 
+---
+
+## Make Levelry the Default in Your Repo
+
+The skill teaches an agent **how** to work with the canvas. But a skill is passive — it only loads when the agent decides it is relevant, so it can't answer "**when** should I look at the board" or "**which** board belongs to this repo". That's why agents keep asking where the documentation lives.
+
+`AGENTS.md` solves this: it is auto-loaded into every agent session (Claude Code, opencode, Kimi Code, etc.), with no triggers and no reminders. Write the mapping once per repo, and every future session knows to treat the Levelry board as the project's knowledge base by default — and what to do when the MCP server isn't connected.
+
+Copy this block into your repo's `AGENTS.md` and replace `<BOARD_NAME>` with your Levelry project name:
+
+```markdown
+## Levelry Canvas
+
+This project's knowledge base lives on a Levelry canvas board named "<BOARD_NAME>",
+accessible via the Levelry MCP server (tools like `switchProject`, `searchDocuments`).
+
+- **Read first.** When you need project documentation, design decisions, entities,
+  tasks, or diagrams, switch to the "<BOARD_NAME>" project and search the board
+  (`searchDocuments`, `listObjects`) before guessing or asking the user.
+- **Write back.** When asked to save findings, plans, documentation, or diagrams,
+  create or update objects on the board instead of adding stray files to the repo.
+- **Degrade gracefully.** If Levelry MCP tools are not available in this session,
+  say so once and continue working locally.
+- **Mechanics.** For canvas rules (bounds, layers, object types, tool limits, batch
+  operations), follow the `levelry-mcp` skill.
+```
+
+---
 
 **weird_drop by [[indie indie](https://x.com/1hrOk)]**

@@ -1,6 +1,6 @@
 ---
 name: levelry-mcp
-description: Levelry canvas MCP — tools, placement rules, object types, layers.
+description: Levelry canvas MCP — tools, placement rules, object types, layers. Use when reading or writing project documentation, notes, diagrams, or structured data on a Levelry canvas via MCP.
 ---
 
 # Levelry Canvas MCP Skill
