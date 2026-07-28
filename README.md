@@ -41,30 +41,6 @@ See [Getting Your MCP Token](#getting-your-mcp-token) below for setup instructio
 
 ---
 
-## Quick Example
-
-```json
-{
-  "toolName": "searchDocuments",
-  "params": { "query": "combat system", "limit": 10 }
-}
-```
-
-```json
-{
-  "toolName": "createMultipleObjects",
-  "params": {
-    "objects": [
-      { "emoji": "⚔️", "x": 1500, "y": 1250, "name": "Combat System", "content": "Core combat mechanics" },
-      { "emoji": "❤️", "x": 1700, "y": 1250, "name": "Health", "content": "HP and damage formulas" }
-    ],
-    "connections": [{ "from": 0, "to": 1 }]
-  }
-}
-```
-
----
-
 ## Use Cases
 
 ### Research & Lookup
@@ -78,20 +54,6 @@ See [Getting Your MCP Token](#getting-your-mcp-token) below for setup instructio
 
 ### AI-Assisted Design
 *"Analyze balance on this layer"* — AI copilot reads canvas context and applies domain-specific skills.
-
----
-
-## Architecture
-
-```
-AI Agent (MCP-compatible)
-  └── Levelry MCP Client
-        └── Levelry MCP Server
-              └── Levelry Canvas API
-                    └── Levelry Platform
-```
-
-The MCP server translates tool calls into Levelry REST API requests. The agent never calls the API directly.
 
 ---
 

@@ -21,7 +21,13 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 * **Rectangle (`type: "rectangle"`):** Used for structural dividers, not regions.
 * **Connections:** Link objects only when the relationship is useful and intentional; avoid visual clutter. Optional `description` (max 500 chars). In batch creation, `from`/`to` accepts number (index in batch) or string (existing ID). Connections are **directed** — `fromObjectId` is the source (tail), `toObjectId` is the target (arrowhead). Use `listConnections` to read existing connections before creating or deleting.
 
-## 3. MCP Tools — Limits & Non-obvious Details
+## 3. Markdown & Links in Documents
+* **Format:** Document `content` is **Markdown** (raw HTML is stripped). Supported: headings `#`–`###`, `**bold**`, lists `-` / `1.`, tables `| col |`, quotes `>`, divider `---`, links `[text](url)`. Use real line breaks, not `\n` escapes.
+* **Link to another object:** write `[Label](#object-<objectId>)` — the app renders it as an internal link; clicking selects the object, switches to its layer, and scrolls to it. Use real IDs from `listObjects`/`searchDocuments`. Always prefer this over mentioning an object by name in plain text.
+* **Legacy link forms** (`canvas-object://<id>`, `obj://<id>`, `obj:<id>`, bare `#object-<id>`, `#doc-<docId>`) are auto-normalized to `#object-` links on load — never write them; use the canonical form above.
+* **External URLs** (`[text](https://…)`) work as normal links.
+
+## 4. MCP Tools — Limits & Non-obvious Details
 
 * `listObjects`: `limit` 1–500 (default 200). `layerId` accepts layer name or ID; prefer names (e.g., `"Layer 1"`).
 * `searchDocuments`: `limit` 1–100 (default 20). **Full-text substring search** (not semantic/fuzzy) across object names, document content, tags, keywords, role, category, description, and other metadata. Use exact keywords.
