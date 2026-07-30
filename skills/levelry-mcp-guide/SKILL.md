@@ -30,7 +30,7 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 ## 4. MCP Tools — Limits & Non-obvious Details
 
 * `listObjects`: `limit` 1–500 (default 200). `layerId` accepts layer name or ID; prefer names (e.g., `"Layer 1"`).
-* `searchDocuments`: `limit` 1–100 (default 20). **Full-text substring search** (not semantic/fuzzy) across object names, document content, tags, keywords, role, category, description, and other metadata. Use exact keywords.
+* `searchDocuments`: `limit` 1–100 (default **10**). **Full-text substring search** (not semantic/fuzzy) across object names, document content, tags, keywords, role, category, description, and other metadata. Use exact keywords. Token-efficient by default: short snippets, no full metadata, response includes `totalObjectsMatched` and `hasMore`. Optional `includeMetadata` (default false) and `compact` (default true). For tags/keywords on hits use `includeMetadata: true`; for full metadata + longer snippets use `includeMetadata: true, compact: false`.
 * `readDocument`: Returns full object info + document content for one object. Always call before editing a document.
 * `readDocuments`: Batch read, max 20 `objectIds` at once. Prefer over repeated `readDocument` calls.
 * `updateDocument`: Replace visible document content for one object. Always `readDocument` first to avoid overwriting. Do not use it for metadata/special fields.
