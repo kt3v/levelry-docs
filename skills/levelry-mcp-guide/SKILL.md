@@ -5,65 +5,35 @@ description: Levelry canvas MCP — tools, placement rules, object types, layers
 
 # Levelry Canvas MCP Skill
 
+Tool schemas and `initialize.instructions` already state bounds, sizing, patch ops,
+and connection rules — follow them. This skill covers what they don't.
+
 ## Workflow
 
-1. **Inspect before write.** Prefer `searchDocuments` (cheap) or `listObjects`; use returned IDs only — never invent them.
-2. **RULES / MEMORY.** Before any change, find objects named **RULES** and **MEMORY**, read them, and follow their documents. Never delete, rename, overwrite, or repurpose them; edit only when explicitly asked.
-3. **Read narrowly.** Before replacing a document: `readDocument`. Several docs → `readDocuments` (max 20). Mentions → `searchDocumentOccurrences`. Local context → `readDocumentExcerpt`. Prefer search/excerpt over full reads.
-4. **Revision gate.** Read responses include `data.rev` (project revision). Pass it as `expectedRevision` on `applyCanvasPatch`.
-5. **Patch-first.** For **2+ mutations**, use `applyCanvasPatch` (atomic). Single simple change → granular tools (`createObject`, `updateDocument`, …). Prefer `createMultipleObjects` / batch `updateObjects` when not using a patch.
-6. Follow live tool schemas for arguments and limits.
+1. **Inspect before write.** `searchDocuments` (cheap) or `listObjects`; use returned IDs only — never invent them.
+2. **RULES / MEMORY.** Before any change, find objects named **RULES** and **MEMORY**, read them, and follow them. Never delete, rename, overwrite, or repurpose them; edit only when explicitly asked. (Convention — the server does not enforce it.)
+3. **Read narrowly.** Prefer `searchDocuments` / `searchDocumentOccurrences` / `readDocumentExcerpt` over full reads; `readDocuments` for several at once.
+4. **Revision gate.** Read responses include `data.rev`; pass it as `expectedRevision` on `applyCanvasPatch`.
+5. **Patch-first.** 2+ mutations → `applyCanvasPatch` (atomic); single simple change → a granular tool.
 
-## Patch-first & revisions
+## REV_MISMATCH
 
-```text
-listObjects / getCurrentProject  →  note data.rev
-searchDocuments / readDocumentExcerpt  →  gather IDs & content
-applyCanvasPatch({ expectedRevision: rev, operations: [...] })
-```
+Re-read (`listObjects` / `getCurrentProject`), take the fresh `data.rev` (or `data.currentRev`
+from the error), rebuild if needed, retry **once**. Never blind-retry a write.
 
-On **`REV_MISMATCH`** (or MCP `isError` with `code: "REV_MISMATCH"`):
-
-1. Re-read (`listObjects` or `getCurrentProject`).
-2. Take the new `data.rev` (and `data.currentRev` from the error if present).
-3. Rebuild the patch if needed and retry **once** with the fresh revision.
-4. Never blind-retry the same write without re-reading.
-
-`applyCanvasPatch` ops (see schema): `object.create` (optional `tempId`), `object.update`, `document.update`, `object.delete`, `connection.create` / `connection.delete`, `canvasDocument.update`, `layer.moveObjects`. Prefer structural connection edges only (flow / dependency / hierarchy / cycle) — not soft theme links.
-
-## Errors (external MCP protocol)
-
-- Failed `tools/call` sets **`isError: true`**. Body is JSON: `{ success: false, code, error, data? }`.
-- REST `/api/mcp/execute` uses the same `code` with HTTP status (400 / 403 / 404 / 409 / 413).
-
-| code | Meaning | What to do |
-|------|---------|------------|
-| `REV_MISMATCH` | Project rev changed | Re-read `rev`, retry patch |
-| `CONFLICT` | Entity conflict | Re-read state; fix ops |
-| `VALIDATION_ERROR` | Bad args / invalid patch | Fix arguments |
-| `NOT_FOUND` | Object/layer/project missing | Re-list / search |
-| `INSUFFICIENT_SCOPE` | Token lacks `mcp:write` (etc.) | Read-only token or wrong tool |
-| `CAPACITY_EXCEEDED` | Object/document limits | Delete or split work |
-| `UNKNOWN_TOOL` | Name not in catalog | Use `tools/list` |
-
-Read-only tokens see only read tools in `tools/list` (~half the catalog). Write tools require `mcp:write`.
+Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `NOT_FOUND` re-list ·
+`INSUFFICIENT_SCOPE` read-only token (write tools need `mcp:write` and are hidden from `tools/list`) ·
+`CAPACITY_EXCEEDED` delete or split work.
 
 ## Canvas
 
-- Visible coordinates: X `450–2550`, Y `375–2125`; center `(1500, 1250)`. Keep objects at least 150px apart.
-- Searches and unfiltered reads span all layers. New objects use the active layer unless `layerId` is supplied; prefer layer **names**. Move objects only with `moveObjectsToLayer`.
-- Every object has a visible Markdown document. Put visible prose in `content`; put machine-readable facts (tags, description, role, category, custom fields) in `metadata`, not a visible “Metadata” section. `updateCanvasDocument` is for project-level notes.
-- A name subtitle is hidden when its document is empty. Add `content` during creation when the label matters; omit it for repetitive objects where labels would clutter.
-- Default objects are emoji. A `textLabel` uses `name` as its text, requires `emoji: "🔤"`, and is for short labels/titles. A `rectangle` requires `width` and `height` and should be a structural divider, not a region containing objects.
+- New objects land on the active layer unless `layerId` is given; prefer layer **names** over IDs. Move objects only via `moveObjectsToLayer`. Searches and unfiltered reads span all layers.
+- Visible prose goes in `content`; machine-readable facts (tags, role, category, …) in `metadata` — never a visible "Metadata" section. `updateCanvasDocument` is for project-level notes.
+- A name subtitle renders only when the document has content: set `content` at creation when the label matters; skip it for repetitive objects.
+- Default type is emoji (always square — set `width` only). `rectangle` is a structural divider, not a container; granular creates require explicit `width`/`height`, patch creates default to 200×100.
+- Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Out-of-range coordinates are clamped, not rejected.
 
 ## Links and connections
 
-- Document content supports Markdown; raw HTML is stripped. Link to another object with its real ID: `[Label](#object-<objectId>)`. Prefer this over legacy object/document URLs. External Markdown links work normally.
-- Connections are directed: `fromObjectId` is the tail and `toObjectId` the arrowhead. Create only useful structural relationships. In batch creation / patch creates, `from`/`to` may be a new-object index/`tempId` or an existing object ID.
-- Call `listConnections` before creating duplicates or deleting a connection by ID. Deleting an object also deletes its connections.
-
-## Project session (external MCP)
-
-- `getCurrentProject` — summary + `rev`.
-- `listProjects` / `switchProject` / `createProjectSwitchLink` / `createProject` — navigate or create projects for the MCP session.
-- Server `initialize.instructions` also summarizes patch-first and error codes (compact protocol guidance).
+- Link to an object from document Markdown: `[Label](#object-<objectId>)`. Raw HTML is stripped.
+- Connections are directed: `fromObjectId` → arrowhead at `toObjectId`. Structural relations only; when unsure, skip the edge. Check `listConnections` before creating duplicates.
