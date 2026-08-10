@@ -28,9 +28,13 @@ Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `N
 ## Canvas
 
 - New objects land on the active layer unless `layerId` is given; prefer layer **names** over IDs. Move objects only via `moveObjectsToLayer`. Searches and unfiltered reads span all layers.
-- Visible prose goes in `content`; machine-readable facts (tags, role, category, …) in `metadata` — never a visible "Metadata" section. `updateCanvasDocument` is for project-level notes.
+- Visible prose goes in `content`; machine-readable facts in `metadata` — never a visible "Metadata" section. Prefer small **tags** (1–5) plus optional short **role** (and sparse **category**). Do not set `description` (prose belongs in the document) or `keywords` (use tags). `listObjects` returns slim meta (role/category/tags) by default; use `includeFullMetadata=true` only when needed. `updateCanvasDocument` is for project-level notes.
 - A name subtitle renders only when the document has content: set `content` at creation when the label matters; skip it for repetitive objects.
 - Default type is emoji (always square — set `width` only). `rectangle` is a structural divider, not a container; granular creates require explicit `width`/`height`, patch creates default to 200×100.
+- **`polygon`** is an AI-only **filled** vector with a **system theme-grey outline**: **one canvas object = one selection**, even when multi-part. Set `type="polygon"`, `emoji="⬡"`. Prefer **`paths: [{points, color?}, ...]`** for multi-part shapes (house = roof + body in the **same** object). Limits: max **80 paths**, **3–320 verts** per path — keep drawings **minimal**. Legacy: `points` + optional top-level `color`. Coords local to `x`/`y`. Width/height ignored; scale proportional. Users: drag/scale/delete/copy only.
+- **Style:** `color` = **fill only**. Client always strokes with one grey (dark grey on light theme, light grey on dark). Prefer **3–8 verts** per path, **≤6 paths**, **1–2 fill colors**. Simple silhouettes, not dense organics.
+- **Colors:** brand fills unless the user asks otherwise — yellow `#F5C518`, green `#19A974`, blue `#3B82C4` (default), orange `#F27A1A`, red `#E63946`, white `#FFFEFC`, navy `#003049`. Avoid pure black and canvas greys for fills.
+- **Detail:** less is more. One concept → one object with `paths`. Edit via `updateObjects` / patch `paths` (or `points`).
 - Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Out-of-range coordinates are clamped, not rejected.
 
 ## Links and connections
