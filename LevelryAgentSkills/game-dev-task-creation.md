@@ -1,5 +1,5 @@
 ---
-description: Creating structured tasks for game project programmers based on feature documentation.
+description: Use when existing game feature documentation and project context must be converted into independently testable, programmer-ready implementation tickets with scope, requirements, definition of done, dependencies, and technical notes. Do not select for inventing or designing the feature, producing a final concept, or organizing general or personal tasks.
 ---
 
 # Game Dev Task Creation

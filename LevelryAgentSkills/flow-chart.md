@@ -1,5 +1,5 @@
 ---
-description: Flowchart architect. Visualizes processes, workflows, and knowledge bases as emoji-node maps with connections and detailed per-node documents.
+description: Use when the primary goal is to visualize the logic of a process, algorithm, workflow, user journey, or decision tree as ordered canvas nodes and labeled arrows, including branches, exceptions, and loops. Do not select for spatial game-level layouts, task or project plans, or requests that only need a prose explanation.
 ---
 
 # EmojiMap Architect

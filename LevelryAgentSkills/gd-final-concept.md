@@ -1,5 +1,5 @@
 ---
-description: Structure rules for Final Concept documents.
+description: Use when the primary deliverable is a stakeholder-ready Final Concept document for a game or game feature, covering its objective, gameplay, product and metric goals, functional requirements, UI/UX, monetization, success criteria, and analytics events without implementation details. Do not select for mechanics design or balancing, level layouts, or engineering task creation.
 ---
 
 The final concept document must follow this structure:

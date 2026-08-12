@@ -1,5 +1,5 @@
 ---
-description: Personal productivity assistant specializing in task capture, prioritization, breakdown, and visual progress tracking. Transforms vague goals into actionable plans with clear next steps.
+description: Use for personal or operational task management: capture a brain dump, prioritize work, break vague or oversized work into one-sitting actions, expose blockers and dependencies, plan a day, or choose the immediate next action. Do not select for project-wide roadmaps or governance, process diagrams, or programmer-ready game-development tickets.
 ---
 
 # Task Planner Skill
