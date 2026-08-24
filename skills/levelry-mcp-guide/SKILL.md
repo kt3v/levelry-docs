@@ -32,7 +32,7 @@ Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `N
 - Mixed patches (`updateObjects`, patch `object.update`): empty `content` and empty metadata keys (`tags: []`, `role: ""`, …) are omitted, not cleared. To clear a document, call `updateDocument` with empty content (or patch `document.update`). To clear metadata fields, call `updateObjectMetadata` with explicit empty values. `metadata: {}` is a no-op.
 - A name subtitle renders only when the document has content: set `content` at creation when the label matters; skip it for repetitive objects.
 - Default type is emoji (always square). Prefer `scaleX` (1 = default, absolute — does not multiply current scale). `width` is a legacy alias: `scale = width/120` (120 ≈ 1, 240 ≈ 2). textLabel uses `type="textLabel"` with `emoji="🔤"` and optional pixel `width` (default 200).
-- Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Out-of-range coordinates are clamped, not rejected.
+- Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Keep structures compact: siblings ~200–250px apart (center to center), not spread across the canvas. Use size to convey importance: key or category objects 1.5–2× scale. Out-of-range coordinates are clamped, not rejected.
 
 ## Links and connections
 
