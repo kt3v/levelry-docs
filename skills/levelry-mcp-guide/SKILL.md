@@ -11,7 +11,7 @@ and connection rules — follow them. This skill covers what they don't.
 ## Workflow
 
 1. **Inspect before write.** `searchDocuments` (cheap) or `listObjects`; use returned IDs only — never invent them.
-2. **RULES / MEMORY.** Before any change, find objects named **RULES** and **MEMORY**, read them, and follow them. Never delete, rename, overwrite, or repurpose them; edit only when explicitly asked. (Convention — the server does not enforce it.)
+2. **RULES / MEMORY.** They live on the **Service** layer (always last). Before any change, find objects named **RULES** and **MEMORY**, read them, and follow them. Never delete, rename, overwrite, or repurpose them; edit only when explicitly asked. Do not delete the Service layer. (Convention — the server does not enforce it.) Skill objects on that layer are ordinary documents and may be read or edited.
 3. **Read narrowly.** Prefer `searchDocuments` / `searchDocumentOccurrences` / `readDocumentExcerpt` over full reads; `readDocuments` for several at once.
 4. **Revision gate.** Read responses include `data.rev`; pass it as `expectedRevision` on `applyCanvasPatch`.
 5. **Patch-first.** 2+ mutations → `applyCanvasPatch` (atomic); single simple change → a granular tool.
@@ -27,7 +27,7 @@ Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `N
 
 ## Canvas
 
-- New objects land on the active layer unless `layerId` is given; prefer layer **names** over IDs. Move objects only via `moveObjectsToLayer`. Searches and unfiltered reads span all layers.
+- New objects land on the active layer unless `layerId` is given; prefer layer **names** over IDs. Move objects only via `moveObjectsToLayer`. Searches and unfiltered reads span all layers, including Service (RULES, MEMORY, and board skills).
 - Visible prose goes in `content`; machine-readable facts in `metadata` — never a visible "Metadata" section. Prefer small **tags** (1–5) plus optional short **role** (and sparse **category**). Do not set `description` (prose belongs in the document) or `keywords` (use tags). `listObjects` returns slim meta (role/category/tags) by default; use `includeFullMetadata=true` only when needed. `updateCanvasDocument` is for project-level notes.
 - Mixed patches (`updateObjects`, patch `object.update`): empty `content` and empty metadata keys (`tags: []`, `role: ""`, …) are omitted, not cleared. To clear a document, call `updateDocument` with empty content (or patch `document.update`). To clear metadata fields, call `updateObjectMetadata` with explicit empty values. `metadata: {}` is a no-op.
 - A name subtitle renders only when the document has content: set `content` at creation when the label matters; skip it for repetitive objects.
