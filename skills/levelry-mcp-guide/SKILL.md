@@ -23,6 +23,7 @@ from the error), rebuild if needed, retry **once**. Never blind-retry a write.
 
 Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `NOT_FOUND` re-list ·
 `INSUFFICIENT_SCOPE` read-only token (write tools need `mcp:write` and are hidden from `tools/list`) ·
+`SESSION_BUSY` the session already has an in-flight apply; let it finish, then retry ·
 `CAPACITY_EXCEEDED` delete or split work.
 
 ## Canvas
@@ -31,7 +32,7 @@ Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `N
 - Visible prose goes in `content`; machine-readable facts in `metadata` — never a visible "Metadata" section. Prefer small **tags** (1–5) plus optional short **role** (and sparse **category**). Do not set `description` (prose belongs in the document) or `keywords` (use tags). `listObjects` returns slim meta (role/category/tags) by default; use `includeFullMetadata=true` only when needed. `updateCanvasDocument` is for project-level notes.
 - Mixed patches (`updateObjects`, patch `object.update`): empty `content` and empty metadata keys (`tags: []`, `role: ""`, …) are omitted, not cleared. To clear a document, call `updateDocument` with empty content (or patch `document.update`). To clear metadata fields, call `updateObjectMetadata` with explicit empty values. `metadata: {}` is a no-op.
 - A name subtitle renders only when the document has content: set `content` at creation when the label matters; skip it for repetitive objects.
-- Default type is emoji (always square). Prefer `scaleX` (1 = default, absolute — does not multiply current scale). `width` is a legacy alias: `scale = width/120` (120 ≈ 1, 240 ≈ 2). textLabel uses `type="textLabel"` with `emoji="🔤"` and optional pixel `width` (default 200).
+- Default type is emoji (always square). Size via `scale`: whole steps 1–4, default 1; other values snap to the nearest step. Scale is absolute, not multiplied. textLabel uses `type="textLabel"` with `emoji="🔤"`; its size is automatic (no width/scale params).
 - Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Keep structures compact: siblings ~200–250px apart (center to center), not spread across the canvas. Use size to convey importance: key or category objects 1.5–2× scale. Out-of-range coordinates are clamped, not rejected.
 
 ## Links and connections
