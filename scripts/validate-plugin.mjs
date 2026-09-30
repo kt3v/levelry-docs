@@ -24,4 +24,4 @@ if (!skill.startsWith('---\nname: levelry-mcp\n') || !skill.includes('projectId'
 const marketplace = JSON.parse(await readFile(new URL('../.agents/plugins/marketplace.json', import.meta.url), 'utf8'));
 if (marketplace.plugins[0].source.path !== './plugins/levelry') fail('Wrong local marketplace source');
 console.log('Plugin package paths, metadata, MCP transport, skill, and marketplace validated.');
-if (!extension.apps) console.log('Pending: register the remote MCP connection and run scripts/register-chatgpt.mjs with its technical ID.');
+if (!extension.apps) console.log('For private local testing: register the remote MCP connection and run scripts/register-chatgpt.mjs with its technical ID. Public ZIPs must omit this mapping.');

@@ -43,6 +43,11 @@ does not nest the website in another iframe.
 
 ## Deploy and privately connect
 
+Production migration was applied on 2026-09-30. Code was pushed to the existing
+deployment branches (`canvas_new2/main`, `LevelryUnifiedServer/master`). Follow
+[the Russian launch guide](LAUNCH.ru.md) for the remaining environment settings,
+ChatGPT registration, current ZIP upload flow, and exact values.
+
 1. Apply `LevelryUnifiedServer/supabase/migrations/20260930160000_chatgpt_oauth_clients.sql`
    through the project's normal migration workflow. This adds server-only DCR
    records and permits a null initial project for ChatGPT OAuth grants.
@@ -61,6 +66,8 @@ does not nest the website in another iframe.
    - `DATABASE_URL`: existing direct/session-mode v3 database connection
    - `CHATGPT_RESOURCE_DOMAINS`: exact additional image/media origins if needed
    - `CHATGPT_CONNECT_DOMAINS`: exact additional fetch origins if needed
+   - `CHATGPT_UI_DOMAIN`: dedicated HTTPS component origin, required before public UI review
+   - `OPENAI_APPS_CHALLENGE`: exact domain challenge token from the OpenAI portal
    R2's public resource origin is included automatically when configured.
    Overlay presigned PUTs also require the exact R2 upload origin in connect CSP
    and bucket CORS permitting the host sandbox origin. Document uploads go via the API.
@@ -93,13 +100,20 @@ binding, expired/tampered/revoked UI sessions, project ACLs, and sync recovery.
 The fixture host HTTP asset is served successfully. A visual browser session and
 a real ChatGPT installation were unavailable, so neither is claimed as tested.
 
-The remote deployment, migration, registered host connection, sidebar visual QA,
+The configured/activated remote integration, registered host connection, sidebar visual QA,
 media CSP/CORS checks, and the review cases must pass before public submission.
 Public submission also needs real privacy/terms/support URLs, domain verification,
 a dedicated reviewer account with seeded example projects, screenshots, and a demo
-video. These have not been fabricated or published. Add verified policy URLs to
+video. Screenshots are optional under the current submission guide. These materials have not been fabricated or published. Add verified policy URLs to
 `plugin.json`'s OpenAI interface before submitting. A published plugin is subject
 to OpenAI review; a local package is not a public directory listing.
+
+The current submission flow uploads a ZIP at `https://platform.openai.com/plugins`.
+Run `node scripts/package-plugin.mjs --draft` for an initial uploadable draft, or
+`--submission` once review fields are filled. The packager strips registered
+`apps`/`.app.json` references from a temporary copy; those references are currently
+unsupported in public ZIP submissions. The local package remains mapped to its
+private ChatGPT connection.
 
 Rollback: set `CHATGPT_ENABLED=false`. Keep the additive client table and nullable
 project columns; legacy grants retain their existing project and audience.

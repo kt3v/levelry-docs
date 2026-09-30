@@ -19,7 +19,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Levelry",
-        "shortDescription": "A visual canvas for notes, plans, and diagrams",
+        "shortDescription": "Your ideas on a visual canvas",
         "longDescription": "Open your Levelry canvas in ChatGPT. Edit documents and layers manually or ask ChatGPT to work on the selected project. Requires a Levelry account; AI runs in ChatGPT under its plan usage limits.",
         "developerName": "Levelry",
         "category": "Productivity",
@@ -32,9 +32,66 @@
           "Open my Levelry canvas.",
           "Organize my ideas into a diagram in Levelry."
         ],
-        "brandColor": "#FFC700",
+        "brandColor": "#8D6900",
+        "brandColorDark": "#FFC700",
         "composerIcon": "./assets/icon.png",
         "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Open the visual editor",
+              "prompt": "Open my Levelry canvas.",
+              "tools_triggered": "openLevelry",
+              "expected_behavior": "Open the interactive editor and show projects accessible to the connected account."
+            },
+            {
+              "description": "List accessible projects",
+              "prompt": "List my Levelry projects.",
+              "tools_triggered": "listProjects",
+              "expected_behavior": "List only projects accessible to the connected account, including their real IDs."
+            },
+            {
+              "description": "Create a project with write consent",
+              "prompt": "Create a new Levelry project called Review Notes.",
+              "tools_triggered": "createProject",
+              "expected_behavior": "Create one project after any host confirmation. Return its ID without changing the project used by another chat."
+            },
+            {
+              "description": "Add a document to the selected canvas",
+              "prompt": "In the selected Levelry project, add a note titled Launch Plan with the text Prepare the first release.",
+              "tools_triggered": "listObjects, createObject",
+              "expected_behavior": "Use the explicit selected project ID and a valid layer. Add one object with its document, and show it in the editor."
+            },
+            {
+              "description": "Read the created note",
+              "prompt": "Find and read the Launch Plan note in the selected Levelry project.",
+              "tools_triggered": "searchDocuments, readDocument",
+              "expected_behavior": "Use the selected project ID and an ID returned by search. Return the saved document text without changing it."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Access to another account's private project",
+              "prompt": "Read a private Levelry project belonging to an account that has not shared it with me.",
+              "expected_behavior": "Do not disclose the private project or modify it. Explain the access limit."
+            },
+            {
+              "description": "Attempt a write with read-only OAuth consent",
+              "prompt": "With my read-only Levelry connection, create a note in the selected project.",
+              "expected_behavior": "Do not create the note. Explain that reconnecting with write consent is required."
+            },
+            {
+              "description": "Unsupported external action",
+              "prompt": "Send my Levelry project to all my email contacts.",
+              "expected_behavior": "Do not send messages or export data. Explain that the plugin does not provide this action."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "Initial Levelry canvas integration with ChatGPT sidebar entrypoints, project selection, document editing, and OAuth scopes."
       }
     }
   }
