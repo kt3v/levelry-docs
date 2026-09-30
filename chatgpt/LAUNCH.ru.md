@@ -53,7 +53,9 @@ curl -i -X POST \
 ## 2. Создать своё подключение в ChatGPT
 
 Включи **Settings → Security and login → Developer mode**.
-Открой [ChatGPT Plugins](https://chatgpt.com/plugins) и нажми **+**.
+Открой [ChatGPT Plugins](https://chatgpt.com/plugins) в обычном браузере,
+нажми **+** и выбери **Create MCP app**. Create plugin запускает создание
+пакета через агента; Upload plugin archive загружает готовый пакет.
 Доступность developer mode зависит от аккаунта и правил workspace.
 Это текущий [процесс подключения OpenAI](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 
@@ -83,19 +85,36 @@ ChatGPT-подключения сервер допускает бесплатн�
 
 ## 3. Установить полный пакет для локальной проверки
 
-Открой созданное подключение в браузере и скопируй из URL его технический
-ID, начинающийся с `plugin_asdk_app_`. Подставь реальный ID вместо
-`plugin_asdk_app_REPLACE_ME`:
+Открой созданное подключение в браузере и скопируй его URL или технический
+ID `asdk_app_…`. В некоторых представлениях ID имеет префикс
+`plugin_asdk_app_…`; скрипт преобразует его в канонический `asdk_app_…`.
+Подставь свой реальный ID вместо `asdk_app_REPLACE_ME`:
 
 ```bash
 cd /Users/maciggi/projects/levelry-docs
-node scripts/register-chatgpt.mjs plugin_asdk_app_REPLACE_ME
+node scripts/register-chatgpt.mjs asdk_app_REPLACE_ME
 node scripts/validate-plugin.mjs
 ```
 
 Скрипт создаёт `.app.json` и связывает пакет с твоим подключением.
 Это не OAuth-секрет. Не запускай скрипт с примером из инструкции.
 Пакет и repo marketplace уже лежат в этом репозитории.
+
+Для личной установки через **Upload plugin archive** можно собрать архив
+с привязкой к зарегистрированному MCP app:
+
+```bash
+node scripts/package-plugin.mjs --private
+```
+
+Результат: `releases/levelry-plugin-0.1.0-private.zip`. Этот вариант сохраняет
+`.app.json`; для публичного submission используются отдельные `--draft`
+и `--submission`, которые убирают привязку из ZIP-копии.
+
+Сам MCP app может открыть редактор уже по адресу
+`https://chatgpt.com/mcp-app/asdk_app_…/openLevelry` до установки полного
+пакета со skill. После открытия выбери проект, сделай одно ручное изменение
+и проверь его сохранение в том же проекте на обычном сайте Levelry.
 
 Открой `levelry-docs` как локальный проект в ChatGPT desktop/Work,
 перезапусти клиент, затем в Plugins Directory выбери источник

@@ -75,7 +75,8 @@ ChatGPT registration, current ZIP upload flow, and exact values.
    discovery. Verify the metadata's `resource` exactly matches the registered URL.
 5. In ChatGPT developer mode, create an OAuth MCP connection for:
    `https://levelry-server-hvyc5.ondigitalocean.app/mcp/chatgpt`.
-   Copy its technical `plugin_asdk_app_...` ID from the connection URL.
+   Copy its canonical `asdk_app_...` ID or full ChatGPT connection URL.
+   The registration script also normalizes `plugin_asdk_app_...` wrappers.
 6. Run `node scripts/register-chatgpt.mjs <technical-id>` in `levelry-docs`, then
    `node scripts/validate-plugin.mjs`.
 7. Open this repo in ChatGPT desktop/Work, refresh its local marketplace,
@@ -98,7 +99,10 @@ and production website/editor builds passed locally. Tests include free-account
 consent, creation of the first project, read-only ownership, PKCE/resource
 binding, expired/tampered/revoked UI sessions, project ACLs, and sync recovery.
 The fixture host HTTP asset is served successfully. A visual browser session and
-a real ChatGPT installation were unavailable, so neither is claimed as tested.
+a real ChatGPT installation were unavailable during automated implementation QA.
+The user subsequently registered the MCP app and confirmed the editor with its
+project selector renders in ChatGPT at the `openLevelry` entrypoint. Manual-write
+sync, ChatGPT-write sync, media, and the complete review cases remain unverified.
 
 The configured/activated remote integration, registered host connection, sidebar visual QA,
 media CSP/CORS checks, and the review cases must pass before public submission.
@@ -114,6 +118,8 @@ Run `node scripts/package-plugin.mjs --draft` for an initial uploadable draft, o
 `apps`/`.app.json` references from a temporary copy; those references are currently
 unsupported in public ZIP submissions. The local package remains mapped to its
 private ChatGPT connection.
+For personal/workspace testing, `--private` preserves the registered app mapping
+and creates `releases/levelry-plugin-0.1.0-private.zip`.
 
 Rollback: set `CHATGPT_ENABLED=false`. Keep the additive client table and nullable
 project columns; legacy grants retain their existing project and audience.

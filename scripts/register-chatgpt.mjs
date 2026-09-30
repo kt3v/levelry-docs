@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
-const id = process.argv[2];
-if (!/^plugin_asdk_app_[a-zA-Z0-9]+$/.test(id ?? '')) throw new Error('Pass the technical ID from the registered ChatGPT MCP connection (plugin_asdk_app_...)');
+import { normalizeAppId } from './registered-app-id.mjs';
+const id = normalizeAppId(process.argv[2]);
 const root = new URL('../plugins/levelry/', import.meta.url);
 const manifestUrl = new URL('plugin.json', root);
 const manifest = JSON.parse(await readFile(manifestUrl, 'utf8'));

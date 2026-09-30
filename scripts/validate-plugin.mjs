@@ -1,6 +1,7 @@
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normalizeAppId } from './registered-app-id.mjs';
 const root = path.resolve(fileURLToPath(new URL('../plugins/levelry/', import.meta.url)));
 const read = async name => JSON.parse(await readFile(path.join(root, name), 'utf8'));
 const manifest = await read('plugin.json');
@@ -17,7 +18,7 @@ for (const value of [extension.interface.composerIcon, extension.interface.logo,
 }
 if (extension.apps) {
   const apps = await read(extension.apps);
-  if (!/^plugin_asdk_app_[a-zA-Z0-9]+$/.test(apps.apps?.levelry?.id ?? '')) fail('Invalid registered MCP ID');
+  if (normalizeAppId(apps.apps?.levelry?.id) !== apps.apps.levelry.id) fail('Registered MCP ID must use its canonical form');
 }
 const skill = await readFile(path.join(root, 'skills/levelry-mcp/SKILL.md'), 'utf8');
 if (!skill.startsWith('---\nname: levelry-mcp\n') || !skill.includes('projectId')) fail('Missing project-aware skill');

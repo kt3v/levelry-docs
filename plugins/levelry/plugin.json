@@ -92,7 +92,8 @@
       },
       "publication": {
         "release_notes": "Initial Levelry canvas integration with ChatGPT sidebar entrypoints, project selection, document editing, and OAuth scopes."
-      }
+      },
+      "apps": "./.app.json"
     }
   }
 }
