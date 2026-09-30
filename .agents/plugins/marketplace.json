@@ -1,0 +1,20 @@
+{
+  "name": "levelry-preview",
+  "interface": {
+    "displayName": "Levelry Private Preview"
+  },
+  "plugins": [
+    {
+      "name": "levelry",
+      "source": {
+        "source": "local",
+        "path": "./plugins/levelry"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

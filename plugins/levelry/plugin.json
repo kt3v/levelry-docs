@@ -1,0 +1,41 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "levelry",
+  "version": "0.1.0",
+  "description": "Create and edit a visual knowledge canvas with ChatGPT.",
+  "author": {
+    "name": "Levelry",
+    "url": "https://levelry.app"
+  },
+  "homepage": "https://levelry.app",
+  "repository": "https://github.com/kt3v/levelry-docs",
+  "keywords": [
+    "canvas",
+    "knowledge",
+    "notes",
+    "diagrams"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Levelry",
+        "shortDescription": "A visual canvas for notes, plans, and diagrams",
+        "longDescription": "Open your Levelry canvas in ChatGPT. Edit documents and layers manually or ask ChatGPT to work on the selected project. Requires a Levelry account; AI runs in ChatGPT under its plan usage limits.",
+        "developerName": "Levelry",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://levelry.app",
+        "defaultPrompt": [
+          "Open my Levelry canvas.",
+          "Organize my ideas into a diagram in Levelry."
+        ],
+        "brandColor": "#FFC700",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}

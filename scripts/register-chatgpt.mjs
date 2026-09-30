@@ -1,0 +1,10 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const id = process.argv[2];
+if (!/^plugin_asdk_app_[a-zA-Z0-9]+$/.test(id ?? '')) throw new Error('Pass the technical ID from the registered ChatGPT MCP connection (plugin_asdk_app_...)');
+const root = new URL('../plugins/levelry/', import.meta.url);
+const manifestUrl = new URL('plugin.json', root);
+const manifest = JSON.parse(await readFile(manifestUrl, 'utf8'));
+await writeFile(new URL('.app.json', root), JSON.stringify({ apps: { levelry: { id } } }, null, 2) + '\n');
+manifest.extensions['com.openai'].apps = './.app.json';
+await writeFile(manifestUrl, JSON.stringify(manifest, null, 2) + '\n');
+console.log('Registered ChatGPT connection mapped into the plugin package.');

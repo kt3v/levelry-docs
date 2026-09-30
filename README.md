@@ -17,6 +17,14 @@ Levelry is a visual knowledge base platform built around:
 
 ---
 
+## ChatGPT sidebar integration (private preview)
+
+The new ChatGPT plugin is packaged in [`plugins/levelry`](plugins/levelry).
+It uses the dedicated `/mcp/chatgpt` endpoint and reuses the Levelry canvas editor.
+See [implementation and private setup](chatgpt/IMPLEMENTATION.md) and
+[review cases](chatgpt/REVIEW-CASES.md). This is a local implementation package;
+the remote deployment and public directory review are still pending.
+
 ## MCP Server
 
 **Endpoint:** `https://levelry-server-hvyc5.ondigitalocean.app/mcp`
