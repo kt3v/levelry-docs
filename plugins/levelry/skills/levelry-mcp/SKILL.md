@@ -10,7 +10,7 @@ and connection rules — follow them. This skill covers what they don't.
 
 ## Project and host context
 
-- Call `openLevelry` with `{}` to open the editor. Let the user choose or create a project.
+- To open a specific project in the editor, resolve the user's selected project with `listProjects` and call `openLevelry` with its `projectId`. If names are ambiguous, ask which project they mean. Call with `{}` only when no project is specified and the user wants to choose or create one in the editor.
 - Use `projectId` from the current app context for every project tool call. When no project is selected, call `listProjects` and ask which one to use, or create one when requested.
 - `switchProject` accepts an explicit project ID on this endpoint. It does not change another conversation's project. Never infer a project from a token-global default.
 - Read the current tool schemas. The ChatGPT endpoint uses v3 rebasing; respect revision errors and `SESSION_BUSY` when returned. Keep project writes within the account's ACL and OAuth scope.
