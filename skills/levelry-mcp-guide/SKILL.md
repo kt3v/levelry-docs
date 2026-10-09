@@ -35,7 +35,17 @@ Other codes: `CONFLICT` re-read and fix ops · `VALIDATION_ERROR` fix args · `N
 - Default type is emoji (always square). Size via `scale`: whole steps 1–4, default 1; other values snap to the nearest step. Scale is absolute, not multiplied. textLabel uses `type="textLabel"` with `emoji="🔤"`; its size is automatic (no width/scale params).
 - Center of the visible field is `(1500, 1250)`; keep objects ≥150px apart. Keep structures compact: siblings ~200–250px apart (center to center), not spread across the canvas. Use size to convey importance: key or category objects 1.5–2× scale. Out-of-range coordinates are clamped, not rejected.
 
+## Levelry Composition
+
+- Treat a layer as a readable map of focused documents. Give an overview (purpose, behavior, usage, rules), maintained records/data, and calculations/formulas/specification distinct documents whenever those parts are present, even if each supplied part is short. Keep repeated records in a table unless each needs its own document or relations.
+- Split by reading purpose and independent maintenance, not by paragraph or a fixed number of levels. Branch where needed; reuse shared documents. A short note serving one reading purpose stays together; honor explicit single-document requests or templates. Do not restructure existing documents during narrow edits.
+- Keep data authoritative in one place. Supporting documents contain enough context to stand alone; other documents link to them instead of duplicating tables or formulas. Domain specification sections can be distributed across the topic.
+- Label overview-to-supporting-part edges by their actual relation (`data`, `formulas`, `specification`, `contains`); these are structural links. Overview-to-detail points toward the supporting part; `depends-on` points toward the prerequisite. Shared theme alone does not justify an edge.
+- Choose a consistent reading direction; align peers in compact rows/columns and leave room for branches. Inspect occupied positions and existing edges before extending or moving a map. Do not move a shared dependency solely because it is connected.
+- Find an entry object with search, then use `listConnections({ objectId })` for incoming and outgoing edges. Follow relevant endpoint IDs across layers and read only the documents needed. `fromObjectId` filters outgoing; `toObjectId` filters incoming; combined filters intersect. Page object/edge lists using `nextOffset` while `hasMore=true`. A compact context is not the full graph.
+- Read a source before extracting parts. Prefer an atomic patch for source edits, new documents, and labeled edges; preserve information and existing links. Patch `tempId` values resolve operation references, not Markdown links: use returned real object IDs in links. Keep the project Canvas document as an entry point and preserve unrelated content when revising it.
+
 ## Links and connections
 
-- Link to an object from document Markdown: `[Label](#object-<objectId>)`. Raw HTML is stripped.
-- Connections are directed: `fromObjectId` → arrowhead at `toObjectId`. Structural relations only; when unsure, skip the edge. Check `listConnections` before creating duplicates.
+- Link to an existing object from document Markdown: `[Label](#object-<objectId>)`. New links to missing objects are rejected before writing. During creation, name supporting documents in plain text, then add links after returned IDs are known. Raw HTML is stripped.
+- Arrows point from `fromObjectId` to `toObjectId`; `hasArrow=false` is an undirected link. Preserve edge IDs and labels when interpreting or editing a graph. Structural relations only; when unsure, inspect the documents. Check `listConnections` before creating duplicates.
