@@ -10,6 +10,17 @@ if (!['--private', '--draft', '--submission'].includes(mode)) throw new Error('U
 const isPrivate = mode === '--private';
 const root = fileURLToPath(new URL('../plugins/levelry/', import.meta.url));
 const manifest = JSON.parse(await readFile(path.join(root, 'plugin.json'), 'utf8'));
+// A personal MCP connection is created with a host-generated package name.
+// Preserve that identity when updating it, without renaming the public source.
+const privateName = process.argv[3];
+const privateVersion = process.argv[4];
+if (privateName || privateVersion) {
+  if (!isPrivate || !/^dev-[a-f0-9]{32}$/.test(privateName ?? '') || !/^\d+\.\d+\.\d+$/.test(privateVersion ?? '')) {
+    throw new Error('Personal update: --private dev-<32 hex characters> <version>. Use the identity downloaded from the existing plugin.');
+  }
+  manifest.name = privateName;
+  manifest.version = privateVersion;
+}
 const extension = manifest.extensions['com.openai'];
 const presentation = extension.interface;
 const missing = [];
@@ -31,10 +42,25 @@ if (isPrivate) {
 if (!isPrivate) delete extension.apps;
 const staging = await mkdtemp(path.join(tmpdir(), 'levelry-plugin-'));
 const outputDir = fileURLToPath(new URL('../releases/', import.meta.url));
-const archive = path.join(outputDir, `levelry-plugin-${manifest.version}${isPrivate ? '-private' : mode === '--draft' ? '-draft' : ''}.zip`);
+const archive = path.join(outputDir, `levelry-plugin-${manifest.version}${privateName ? '-personal-update' : isPrivate ? '-private' : mode === '--draft' ? '-draft' : ''}.zip`);
 try {
   await cp(root, staging, { recursive: true, filter: source => path.basename(source) !== '.DS_Store' && (isPrivate || path.basename(source) !== '.app.json') });
-  await writeFile(path.join(staging, 'plugin.json'), JSON.stringify(manifest, null, 2) + '\n');
+  if (privateName) {
+    // Match the Codex-format package created by the personal MCP connection.
+    const personalManifest = {
+      name: manifest.name, version: manifest.version, description: manifest.description,
+      author: manifest.author, homepage: manifest.homepage, repository: manifest.repository,
+      interface: presentation, apps: extension.apps,
+    };
+    await mkdir(path.join(staging, '.codex-plugin'), { recursive: true });
+    await writeFile(path.join(staging, '.codex-plugin/plugin.json'), JSON.stringify(personalManifest, null, 2) + '\n');
+    await rm(path.join(staging, 'plugin.json'));
+    // Reuse the registered app; a second URL connection would duplicate it.
+    // Review materials remain in the public package, which uses the MCP URL.
+    await rm(path.join(staging, 'mcp.json'));
+  } else {
+    await writeFile(path.join(staging, 'plugin.json'), JSON.stringify(manifest, null, 2) + '\n');
+  }
   await mkdir(outputDir, { recursive: true });
   await rm(archive, { force: true });
   const result = spawnSync('zip', ['-qr', archive, ...(await readdir(staging)).sort()], { cwd: staging, encoding: 'utf8' });
