@@ -3,7 +3,19 @@
   "mcpServers": {
     "levelry": {
       "type": "streamable-http",
-      "url": "https://levelry-server-hvyc5.ondigitalocean.app/mcp/chatgpt"
+      "url": "https://levelry-server-hvyc5.ondigitalocean.app/mcp/chatgpt",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "dcr"
+            },
+            "resource": "https://levelry-server-hvyc5.ondigitalocean.app/mcp/chatgpt",
+            "defaultScopes": ["mcp:read", "mcp:write"]
+          }
+        }
+      }
     }
   }
 }

@@ -184,3 +184,12 @@ Launch Plan прочитан обратно через MCP. В браузерн�
 Подготовлены личный пакет `levelry-plugin-1.0.7-personal-update.zip`
 и публичный черновик `levelry-plugin-0.1.2-draft.zip`. Эти изменения локальные:
 деплой сервера и импорт нового пакета в ChatGPT ещё не выполнены.
+
+## Настройка публичного MCP 10 октября 2026
+
+Домен `levelry-server-hvyc5.ondigitalocean.app` подтверждён в портале OpenAI.
+Сервер отдаёт точный публичный токен по `/.well-known/openai-apps-challenge`.
+Пакет 0.1.4 добавляет `extensions.com.openai.auth` в `mcp.json`: OAuth,
+автоматическую регистрацию клиента (`dcr`), ресурс `/mcp/chatgpt` и scopes
+`mcp:read`, `mcp:write`. Видео и текущая SVG-иконка сохранены в пакете.
+Авторизация аккаунта для сканирования и само ревью выполняются в портале.
