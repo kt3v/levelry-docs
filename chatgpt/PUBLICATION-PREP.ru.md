@@ -87,8 +87,8 @@ Refresh tools личного подключения выполнен после 
 | Рабочий openLevelry | Прямой вызов установленного подключения прошёл без ошибки |
 | Запуск Open plugin | Реальный браузерный редактор загрузился через карточку |
 | Пять positive / три negative cases | Есть в manifest; живой прогон не зафиксирован |
-| Support / privacy / terms URLs | Отсутствуют в manifest |
-| Видео и demo_recording_url | Не подготовлены |
+| Support / privacy / terms URLs | Добавлены в manifest; страницы доступны на levelry.app |
+| Видео и demo_recording_url | [Видео 4:10](https://youtu.be/igbdtdldCh0); URL добавлен в manifest версии 0.1.3 |
 | Скриншоты | Не сняты |
 | Reviewer account | Не подготовлен |
 | UI domain / CSP, domain challenge, scan | Проверить рабочий сервер и портал |
